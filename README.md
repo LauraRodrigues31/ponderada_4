@@ -17,3 +17,7 @@ Integrei o image_picker para captura de fotos pela câmera nativa. Criei CameraS
 ### Passo 4 — GPS (segundo hardware)
 
 Integrei o geolocator para captura de coordenadas GPS. Criei LocationService em services/ seguindo o mesmo padrão do CameraService: a Screen apenas reage ao toque e delega ao Service. Implementei tratamento de erro para os casos de permissão negada e GPS desligado — primeiro ponto do app onde erros reais de hardware precisaram ser tratados explicitamente.
+
+### Passo 5 — Model Coleta e SQLite
+
+Defini o Model Coleta na camada Domain com serialização toMap/fromMap para o SQLite. Implementei ColetaRepository como único ponto de acesso ao banco — nenhuma outra camada conhece o sqflite. ColetaService orquestra a operação entre Screen e Repository. O fluxo completo agora é: Screen → Service → Repository → SQLite.

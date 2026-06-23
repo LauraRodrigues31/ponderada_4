@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import '../models/coleta.dart';
 import '../services/camera_service.dart';
+import '../services/coleta_service.dart';
 import '../services/location_service.dart';
 
 class NovaColetaScreen extends StatefulWidget {
@@ -16,6 +18,7 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
   final _observacoesController = TextEditingController();
   final _cameraService = CameraService();
   final _locationService = LocationService();
+  final _coletaService = ColetaService();
   String? _tipoRocha;
   String? _fotoPath;
   double? _latitude;
@@ -52,10 +55,27 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
     }
   }
 
-  void _salvar() {
-    if (_formKey.currentState!.validate()) {
+  Future<void> _salvar() async {
+    if (!_formKey.currentState!.validate()) return;
+    final coleta = Coleta(
+      nome: _nomeController.text.trim(),
+      observacoes: _observacoesController.text.trim(),
+      tipoRocha: _tipoRocha ?? 'Indefinida',
+      fotoPath: _fotoPath,
+      latitude: _latitude,
+      longitude: _longitude,
+      dataHora: DateTime.now(),
+    );
+    try {
+      await _coletaService.salvarColeta(coleta);
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Coleta salva com sucesso!')),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Erro ao salvar coleta. Tente novamente.')),
       );
     }
   }
