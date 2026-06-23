@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'sobre_screen.dart';
+import 'nova_coleta_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -19,6 +20,16 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 8),
             const Text('Registro de coletas em campo'),
             const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const NovaColetaScreen()),
+                );
+              },
+              child: const Text('Nova Coleta'),
+            ),
+            const SizedBox(height: 12),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
