@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'sobre_screen.dart';
 import 'nova_coleta_screen.dart';
+import 'historico_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -33,8 +34,18 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
-              context,
-            MaterialPageRoute(builder: (context) => const SobreScreen()),
+                  context,
+                  MaterialPageRoute(builder: (context) => const HistoricoScreen()),
+                );
+              },
+              child: const Text('Ver Histórico'),
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SobreScreen()),
                 );
               },
               child: const Text('Sobre o app'),

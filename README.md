@@ -21,3 +21,7 @@ Integrei o geolocator para captura de coordenadas GPS. Criei LocationService em 
 ### Passo 5 — Model Coleta e SQLite
 
 Defini o Model Coleta na camada Domain com serialização toMap/fromMap para o SQLite. Implementei ColetaRepository como único ponto de acesso ao banco — nenhuma outra camada conhece o sqflite. ColetaService orquestra a operação entre Screen e Repository. O fluxo completo agora é: Screen → Service → Repository → SQLite.
+
+### Passo 6 — Telas Histórico e Detalhe
+
+Implementei as telas de listagem e detalhe consumindo ColetaService já existente — não foi necessário modificar nenhuma camada de Service ou Repository, apenas criar as Screens. Isso demonstra a arquitetura funcionando: as camadas inferiores são estáveis e as Screens apenas consomem. DetalheScreen recebe o objeto Coleta via construtor sem buscar o banco novamente.
