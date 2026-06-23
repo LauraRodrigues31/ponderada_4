@@ -119,7 +119,7 @@ flutter run
 
 ## 📹 Vídeo de demonstração
 
-[LAURA: adicione o link do vídeo após gravar]
+https://drive.google.com/file/d/1clfr-OvPp1JGocQExcpAA_cQn0kqXWZs/view?usp=sharing 
 
 ---
 
