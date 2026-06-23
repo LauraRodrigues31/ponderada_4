@@ -17,7 +17,7 @@ O Frontera Campo resolve esse gargalo digitalizando o registro no momento da col
 - Captura automática de coordenadas GPS
 - Consulta de clima no momento da coleta via Open-Meteo
 - Armazenamento local offline com SQLite
-- Sincronização com Firebase (Firestore + Storage)
+- Sincronização com Firebase Firestore (dados textuais)
 - Notificação local após sincronização concluída
 - Compartilhamento de coletas via apps nativos do dispositivo
 - Histórico de coletas com visualização detalhada
@@ -42,7 +42,7 @@ A Screen nunca acessa banco de dados ou APIs diretamente. Toda comunicação pas
 | Flutter | Framework mobile |
 | SQLite (sqflite) | Persistência local offline |
 | Firebase Firestore | Banco de dados na nuvem |
-| Firebase Storage | Armazenamento de fotos |
+| Firebase Storage | Previsto, não utilizado (veja Passo 8) |
 | Open-Meteo API | Clima em tempo real (sem chave) |
 | image_picker | Acesso à câmera |
 | geolocator | Acesso ao GPS |
@@ -72,7 +72,7 @@ flutter pub get
 
 3. Configure o Firebase
    - Crie um projeto no [Firebase Console](https://console.firebase.google.com)
-   - Ative Firestore e Storage
+   - Ative o Firestore Database (modo teste)
    - Baixe o `google-services.json` e coloque em `android/app/`
 
 4. Execute o app
@@ -120,7 +120,9 @@ Integrei a API Open-Meteo para buscar clima automaticamente após captura do GPS
 
 ### Passo 8 - Firebase e persistência de clima
 
-Implementei sync com Firestore e Storage seguindo offline-first: SQLite sempre primeiro, Firebase em background sem bloquear o usuário. FirebaseService é isolado em services/ e nem a Screen nem o Repository conhecem Firebase diretamente. Aproveitei a migração do model para adicionar persistência de temperatura e condição climática junto com cada coleta. Migração do SQLite implementada com onUpgrade para não quebrar dados existentes.
+Implementei sync com Firestore seguindo offline-first: SQLite sempre primeiro, Firebase em background sem bloquear o usuário. FirebaseService é isolado em services/ e nem a Screen nem o Repository conhecem Firebase diretamente. Aproveitei a migração do model para adicionar persistência de temperatura e condição climática junto com cada coleta. Migração do SQLite implementada com onUpgrade para não quebrar dados existentes.
+
+**Observação sobre Firebase Storage:** o Storage foi planejado para subir as fotos das coletas para a nuvem, mas o Firebase Storage exige o plano Blaze (pay-as-you-go) mesmo para uso dentro da cota gratuita. Por algum motivo que desconheço não consegui ativar a billing desta conta. A decisão foi manter apenas a sincronização Firestore para os dados textuais. As fotos ficam armazenadas localmente no dispositivo via SQLite e continuam visíveis no histórico e no detalhe da coleta.
 
 ### Passo 9 - Notificações locais
 
