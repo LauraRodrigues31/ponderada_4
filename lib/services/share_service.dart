@@ -6,12 +6,12 @@ class ShareService {
     final texto = _montarTexto(coleta);
 
     if (coleta.fotoPath != null) {
-      await SharePlus.instance.share(ShareParams(
-        files: [XFile(coleta.fotoPath!)],
+      await Share.shareXFiles(
+        [XFile(coleta.fotoPath!)],
         text: texto,
-      ));
+      );
     } else {
-      await SharePlus.instance.share(ShareParams(text: texto));
+      await Share.share(texto);
     }
   }
 
