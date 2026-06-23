@@ -97,13 +97,23 @@ flutter run
   </tr>
   <tr>
     <td align="center"><b>Histórico</b></td>
-    <td align="center"><b>Sobre</b></td>
-    <td align="center"><b>Firebase Firestore</b></td>
+    <td align="center"><b>Detalhe da Coleta</b></td>
+    <td align="center"><b>Compartilhar</b></td>
   </tr>
   <tr>
     <td><img src="docs/screenshots/historico_de_coletas.jpeg" width="200"/></td>
+    <td><img src="docs/screenshots/tela_detalhes.jpeg" width="200"/></td>
+    <td><img src="docs/screenshots/compartilhar.jpeg" width="200"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Sobre</b></td>
+    <td align="center"><b>Firebase Firestore</b></td>
+    <td></td>
+  </tr>
+  <tr>
     <td><img src="docs/screenshots/sobre.jpeg" width="200"/></td>
     <td><img src="docs/screenshots/firebase.jpeg" width="200"/></td>
+    <td></td>
   </tr>
 </table>
 
