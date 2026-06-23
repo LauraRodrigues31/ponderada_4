@@ -1,11 +1,14 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../models/coleta.dart';
+import '../services/share_service.dart';
 
 class DetalheScreen extends StatelessWidget {
   const DetalheScreen({super.key, required this.coleta});
 
   final Coleta coleta;
+
+  static final _shareService = ShareService();
 
   String _formatarDataHora(DateTime data) {
     return '${data.day.toString().padLeft(2, '0')}/'
@@ -19,6 +22,10 @@ class DetalheScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Detalhe da Coleta')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _shareService.compartilharColeta(coleta),
+        child: const Icon(Icons.share),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
