@@ -18,8 +18,33 @@ class DetalheScreen extends StatelessWidget {
         '${data.minute.toString().padLeft(2, '0')}';
   }
 
+  Widget _fotoOuPlaceholder() {
+    if (coleta.fotoPath == null) return const SizedBox.shrink();
+    if (File(coleta.fotoPath!).existsSync()) {
+      return Image.file(
+        File(coleta.fotoPath!),
+        height: 250,
+        width: double.infinity,
+        fit: BoxFit.cover,
+      );
+    }
+    return Container(
+      height: 250,
+      color: Colors.grey[200],
+      child: const Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.broken_image, size: 48, color: Colors.grey),
+          SizedBox(height: 8),
+          Text('Foto não disponível', style: TextStyle(color: Colors.grey)),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final foto = _fotoOuPlaceholder();
     return Scaffold(
       appBar: AppBar(title: const Text('Detalhe da Coleta')),
       floatingActionButton: FloatingActionButton(
@@ -31,13 +56,7 @@ class DetalheScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (coleta.fotoPath != null)
-              Image.file(
-                File(coleta.fotoPath!),
-                height: 250,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+            foto,
             if (coleta.fotoPath != null) const SizedBox(height: 16),
             Text(
               coleta.nome,

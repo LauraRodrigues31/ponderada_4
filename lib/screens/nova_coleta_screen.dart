@@ -28,6 +28,7 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
   double? _longitude;
   Clima? _clima;
   bool _carregandoClima = false;
+  bool _salvando = false;
 
   @override
   void dispose() {
@@ -57,7 +58,7 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Não foi possível obter localização. Verifique as permissões.'),
+          content: Text('GPS indisponível. Verifique se a localização está ativada.'),
         ),
       );
     }
@@ -65,6 +66,7 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
 
   Future<void> _buscarClima(double lat, double lon) async {
     final dados = await _weatherService.buscarClima(lat, lon);
+    if (!mounted) return;
     setState(() {
       _carregandoClima = false;
       _clima = dados != null ? Clima.fromMap(dados) : null;
@@ -73,6 +75,8 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
 
   Future<void> _salvar() async {
     if (!_formKey.currentState!.validate()) return;
+    setState(() => _salvando = true);
+
     final coleta = Coleta(
       nome: _nomeController.text.trim(),
       observacoes: _observacoesController.text.trim(),
@@ -84,17 +88,30 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
       temperatura: _clima?.temperatura,
       descricaoClima: _clima?.descricao,
     );
+
     try {
       await _coletaService.salvarColeta(coleta);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Coleta salva com sucesso!')),
       );
+      _nomeController.clear();
+      _observacoesController.clear();
+      setState(() {
+        _tipoRocha = null;
+        _fotoPath = null;
+        _latitude = null;
+        _longitude = null;
+        _clima = null;
+        _carregandoClima = false;
+        _salvando = false;
+      });
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erro ao salvar coleta. Tente novamente.')),
       );
+      setState(() => _salvando = false);
     }
   }
 
@@ -181,13 +198,19 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
                 )
               else if (_latitude != null)
                 const Text(
-                  'Clima indisponível',
+                  '🌡️ Clima indisponível',
                   style: TextStyle(color: Colors.grey),
                 ),
               const SizedBox(height: 24),
               ElevatedButton(
-                onPressed: _salvar,
-                child: const Text('Salvar Coleta'),
+                onPressed: _salvando ? null : _salvar,
+                child: _salvando
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Text('Salvar Coleta'),
               ),
             ],
           ),

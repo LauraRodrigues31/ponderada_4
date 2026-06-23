@@ -10,7 +10,8 @@ class WeatherService {
       '&current=temperature_2m,weathercode&timezone=auto',
     );
     try {
-      final response = await http.get(uri);
+      final response =
+          await http.get(uri).timeout(const Duration(seconds: 5));
       if (response.statusCode != 200) return null;
       return jsonDecode(response.body) as Map<String, dynamic>;
     } catch (_) {

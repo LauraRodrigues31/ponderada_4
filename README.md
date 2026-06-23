@@ -42,5 +42,9 @@ Implementei notificação local disparada pelo ColetaService após confirmação
 
 Implementei compartilhamento via share_plus que aciona o menu nativo do sistema operacional. Criei ShareService em services/ para manter consistência arquitetural — a Screen não acessa o share_plus diretamente. O compartilhamento inclui foto quando disponível via shareXFiles, ou apenas texto quando não há foto.
 
+### Passo 11 — Tratamento de erros e polish
+
+Revisei todas as telas e services para tratar falhas de forma explícita e amigável. Cada ponto de falha tem comportamento definido: câmera cancelada não gera erro, GPS indisponível mostra mensagem específica, falha no SQLite mostra tela de erro com retry, foto inexistente no disco tem fallback visual. Adicionei timeouts no Firebase (10s) e Open-Meteo (5s) para evitar esperas indefinidas. Botão de salvar desabilitado durante operação para evitar duplo envio.
+
 > **⚠️ Configuração necessária para Firebase funcionar:**
 > Crie um projeto no [Firebase Console](https://console.firebase.google.com/), adicione um app Android com o package name do projeto, baixe o arquivo `google-services.json` gerado e coloque em `android/app/google-services.json`. Para iOS, baixe o `GoogleService-Info.plist` e adicione em `ios/Runner/`. Sem esses arquivos o app continua funcionando normalmente em modo offline-first — o sync com Firebase simplesmente não ocorre.
