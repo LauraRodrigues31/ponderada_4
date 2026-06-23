@@ -1,4 +1,92 @@
-# ponderada_4
+# Frontera Campo
+
+> Aplicativo mobile para registro de coletas geológicas em campo, desenvolvido em Flutter como parte da Ponderada 4 do curso de Desenvolvimento Mobile.
+
+## 🎯 Problema e Solução
+
+Geólogos de campo trabalham em condições adversas — locais remotos, climas variados — e durante as visitas registram manualmente em cadernos informações críticas como litologia, descrição do terreno e condições climáticas, além de fotografar extensivamente as amostras e o local.
+
+O problema surge depois: esses profissionais precisam sentar no escritório e transcrever todas essas anotações para planilhas, organizar centenas de fotos do rolo da câmera e montar relatórios para engenheiros de minas que dependem desses dados para tomar decisões. Com a rotina intensa de campo, esse trabalho administrativo acumula, os dados ficam desorganizados e as fotos se perdem — atrasando toda a cadeia de análise da área.
+
+O Frontera Campo resolve esse gargalo digitalizando o registro no momento da coleta. Com o app, o geólogo fotografa, anota a litologia, captura as coordenadas GPS e registra as condições climáticas automaticamente — tudo vinculado a uma visita específica, em um único lugar. A arquitetura offline-first garante funcionamento mesmo sem sinal, uma realidade frequente em campo. Quando houver conexão, os dados sincronizam automaticamente com a nuvem, ficando disponíveis para a equipe de escritório sem que o geólogo precise fazer nenhum trabalho adicional.
+
+## 📱 Funcionalidades
+
+- Registro de coletas com nome, tipo de rocha e observações
+- Captura de foto pela câmera do dispositivo
+- Captura automática de coordenadas GPS
+- Consulta de clima no momento da coleta via Open-Meteo
+- Armazenamento local offline com SQLite
+- Sincronização com Firebase (Firestore + Storage)
+- Notificação local após sincronização concluída
+- Compartilhamento de coletas via apps nativos do dispositivo
+- Histórico de coletas com visualização detalhada
+
+## 🏗️ Arquitetura
+
+O projeto segue Clean Architecture adaptada para mobile, com separação em quatro camadas:
+
+| Camada | Pasta | Responsabilidade |
+|--------|-------|-----------------|
+| Handler | `screens/` | Recebe interação do usuário, chama Services |
+| Service | `services/` | Regras de negócio, orquestra operações |
+| Repository | `repositories/` | Acesso a dados (SQLite e Firebase) |
+| Domain | `models/` | Define a forma dos dados |
+
+A Screen nunca acessa banco de dados ou APIs diretamente. Toda comunicação passa pelas camadas intermediárias.
+
+## 🛠️ Tecnologias
+
+| Tecnologia | Uso |
+|-----------|-----|
+| Flutter | Framework mobile |
+| SQLite (sqflite) | Persistência local offline |
+| Firebase Firestore | Banco de dados na nuvem |
+| Firebase Storage | Armazenamento de fotos |
+| Open-Meteo API | Clima em tempo real (sem chave) |
+| image_picker | Acesso à câmera |
+| geolocator | Acesso ao GPS |
+| flutter_local_notifications | Notificações locais |
+| share_plus | Compartilhamento nativo |
+
+## ▶️ Como executar
+
+### Pré-requisitos
+
+- Flutter SDK instalado
+- Android Studio ou Xcode configurado
+- Projeto Firebase criado
+
+### Passos
+
+1. Clone o repositório
+```bash
+git clone https://github.com/LauraRodrigues31/ponderada_4.git
+cd ponderada_4
+```
+
+2. Instale as dependências
+```bash
+flutter pub get
+```
+
+3. Configure o Firebase
+   - Crie um projeto no [Firebase Console](https://console.firebase.google.com)
+   - Ative Firestore e Storage
+   - Baixe o `google-services.json` e coloque em `android/app/`
+
+4. Execute o app
+```bash
+flutter run
+```
+
+> **Nota:** sem o `google-services.json` o app funciona normalmente em modo offline-first — SQLite, câmera, GPS e clima continuam operando. Apenas a sincronização com a nuvem e as notificações de sync não ocorrem.
+
+## 📹 Vídeo de demonstração
+
+[LAURA: adicione o link do vídeo após gravar]
+
+---
 
 ## 🔨 Processo de Desenvolvimento
 
@@ -45,6 +133,3 @@ Implementei compartilhamento via share_plus que aciona o menu nativo do sistema 
 ### Passo 11 — Tratamento de erros e polish
 
 Revisei todas as telas e services para tratar falhas de forma explícita e amigável. Cada ponto de falha tem comportamento definido: câmera cancelada não gera erro, GPS indisponível mostra mensagem específica, falha no SQLite mostra tela de erro com retry, foto inexistente no disco tem fallback visual. Adicionei timeouts no Firebase (10s) e Open-Meteo (5s) para evitar esperas indefinidas. Botão de salvar desabilitado durante operação para evitar duplo envio.
-
-> **⚠️ Configuração necessária para Firebase funcionar:**
-> Crie um projeto no [Firebase Console](https://console.firebase.google.com/), adicione um app Android com o package name do projeto, baixe o arquivo `google-services.json` gerado e coloque em `android/app/google-services.json`. Para iOS, baixe o `GoogleService-Info.plist` e adicione em `ios/Runner/`. Sem esses arquivos o app continua funcionando normalmente em modo offline-first — o sync com Firebase simplesmente não ocorre.
