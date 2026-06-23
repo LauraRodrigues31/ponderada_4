@@ -82,6 +82,31 @@ flutter run
 
 > **Nota:** sem o `google-services.json` o app funciona normalmente em modo offline-first: SQLite, câmera, GPS e clima continuam operando. Apenas a sincronização com a nuvem e as notificações de sync não ocorrem.
 
+## 📸 Screenshots
+
+<table>
+  <tr>
+    <td align="center"><b>Home</b></td>
+    <td align="center"><b>Nova Coleta</b></td>
+    <td align="center"><b>Nova Coleta + GPS</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/home.jpeg" width="200"/></td>
+    <td><img src="docs/screenshots/nova_coleta.jpeg" width="200"/></td>
+    <td><img src="docs/screenshots/nova_coleta_localizacao.jpeg" width="200"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Histórico</b></td>
+    <td align="center"><b>Sobre</b></td>
+    <td align="center"><b>Firebase Firestore</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/historico_de_coletas.jpeg" width="200"/></td>
+    <td><img src="docs/screenshots/sobre.jpeg" width="200"/></td>
+    <td><img src="docs/screenshots/firebase.jpeg" width="200"/></td>
+  </tr>
+</table>
+
 ## 📹 Vídeo de demonstração
 
 [LAURA: adicione o link do vídeo após gravar]
