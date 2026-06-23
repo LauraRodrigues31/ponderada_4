@@ -34,5 +34,9 @@ Integrei a API Open-Meteo para buscar clima automaticamente após captura do GPS
 
 Implementei sync com Firestore e Storage seguindo offline-first: SQLite sempre primeiro, Firebase em background sem bloquear o usuário. FirebaseService é isolado em services/ — nem a Screen nem o Repository conhecem Firebase diretamente. Aproveitei a migração do model para adicionar persistência de temperatura e condição climática junto com cada coleta. Migração do SQLite implementada com onUpgrade para não quebrar dados existentes.
 
+### Passo 9 — Notificações locais
+
+Implementei notificação local disparada pelo ColetaService após confirmação de sync com Firebase. A escolha por notificação local (não push) é intencional: o gatilho é interno ao app. NotificationService é inicializado no main.dart antes do runApp. A Screen não conhece o sistema de notificações — o feedback ao usuário é responsabilidade da camada de Service.
+
 > **⚠️ Configuração necessária para Firebase funcionar:**
 > Crie um projeto no [Firebase Console](https://console.firebase.google.com/), adicione um app Android com o package name do projeto, baixe o arquivo `google-services.json` gerado e coloque em `android/app/google-services.json`. Para iOS, baixe o `GoogleService-Info.plist` e adicione em `ios/Runner/`. Sem esses arquivos o app continua funcionando normalmente em modo offline-first — o sync com Firebase simplesmente não ocorre.

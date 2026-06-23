@@ -1,10 +1,12 @@
 import '../models/coleta.dart';
 import '../repositories/coleta_repository.dart';
 import 'firebase_service.dart';
+import 'notification_service.dart';
 
 class ColetaService {
   final _repository = ColetaRepository();
   final _firebaseService = FirebaseService();
+  final _notificationService = NotificationService();
 
   Future<void> salvarColeta(Coleta coleta) async {
     final id = await _repository.salvar(coleta);
@@ -20,6 +22,7 @@ class ColetaService {
       final firebaseId = await _firebaseService.sincronizarColeta(coleta);
       if (firebaseId != null) {
         await _repository.atualizarFirebaseId(id, firebaseId);
+        await _notificationService.notificarSyncConcluido(coleta.nome);
       }
     } catch (_) {
       // falha silenciosa — offline-first
