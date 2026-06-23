@@ -29,3 +29,10 @@ Implementei as telas de listagem e detalhe consumindo ColetaService já existent
 ### Passo 7 — API externa Open-Meteo
 
 Integrei a API Open-Meteo para buscar clima automaticamente após captura do GPS. WeatherService acessa a API diretamente sem Repository abaixo — decisão arquitetural consciente pois não há persistência de dados climáticos. Criei o model Clima com getter de descrição humanizada do weatherCode. A falha na API não bloqueia o fluxo do usuário.
+
+### Passo 8 — Firebase e persistência de clima
+
+Implementei sync com Firestore e Storage seguindo offline-first: SQLite sempre primeiro, Firebase em background sem bloquear o usuário. FirebaseService é isolado em services/ — nem a Screen nem o Repository conhecem Firebase diretamente. Aproveitei a migração do model para adicionar persistência de temperatura e condição climática junto com cada coleta. Migração do SQLite implementada com onUpgrade para não quebrar dados existentes.
+
+> **⚠️ Configuração necessária para Firebase funcionar:**
+> Crie um projeto no [Firebase Console](https://console.firebase.google.com/), adicione um app Android com o package name do projeto, baixe o arquivo `google-services.json` gerado e coloque em `android/app/google-services.json`. Para iOS, baixe o `GoogleService-Info.plist` e adicione em `ios/Runner/`. Sem esses arquivos o app continua funcionando normalmente em modo offline-first — o sync com Firebase simplesmente não ocorre.

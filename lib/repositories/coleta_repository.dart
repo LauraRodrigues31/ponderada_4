@@ -7,7 +7,7 @@ class ColetaRepository {
     final caminho = join(await getDatabasesPath(), 'frontera_campo.db');
     return openDatabase(
       caminho,
-      version: 1,
+      version: 2,
       onCreate: (db, version) => db.execute('''
         CREATE TABLE coletas (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,9 +17,19 @@ class ColetaRepository {
           fotoPath TEXT,
           latitude REAL,
           longitude REAL,
-          dataHora TEXT
+          dataHora TEXT,
+          temperatura REAL,
+          descricaoClima TEXT,
+          firebaseId TEXT
         )
       '''),
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('ALTER TABLE coletas ADD COLUMN temperatura REAL');
+          await db.execute('ALTER TABLE coletas ADD COLUMN descricaoClima TEXT');
+          await db.execute('ALTER TABLE coletas ADD COLUMN firebaseId TEXT');
+        }
+      },
     );
   }
 
@@ -32,5 +42,15 @@ class ColetaRepository {
     final db = await _db;
     final maps = await db.query('coletas', orderBy: 'dataHora DESC');
     return maps.map(Coleta.fromMap).toList();
+  }
+
+  Future<void> atualizarFirebaseId(int id, String firebaseId) async {
+    final db = await _db;
+    await db.update(
+      'coletas',
+      {'firebaseId': firebaseId},
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }

@@ -81,6 +81,8 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
       latitude: _latitude,
       longitude: _longitude,
       dataHora: DateTime.now(),
+      temperatura: _clima?.temperatura,
+      descricaoClima: _clima?.descricao,
     );
     try {
       await _coletaService.salvarColeta(coleta);

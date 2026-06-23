@@ -52,6 +52,18 @@ class DetalheScreen extends StatelessWidget {
                 Text(_formatarDataHora(coleta.dataHora)),
               ],
             ),
+            if (coleta.temperatura != null) ...[
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  const Icon(Icons.thermostat, size: 18, color: Colors.grey),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${coleta.temperatura!.toStringAsFixed(0)}°C • ${coleta.descricaoClima ?? ''}',
+                  ),
+                ],
+              ),
+            ],
             if (coleta.latitude != null) ...[
               const SizedBox(height: 8),
               Row(
