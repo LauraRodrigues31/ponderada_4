@@ -25,3 +25,7 @@ Defini o Model Coleta na camada Domain com serialização toMap/fromMap para o S
 ### Passo 6 — Telas Histórico e Detalhe
 
 Implementei as telas de listagem e detalhe consumindo ColetaService já existente — não foi necessário modificar nenhuma camada de Service ou Repository, apenas criar as Screens. Isso demonstra a arquitetura funcionando: as camadas inferiores são estáveis e as Screens apenas consomem. DetalheScreen recebe o objeto Coleta via construtor sem buscar o banco novamente.
+
+### Passo 7 — API externa Open-Meteo
+
+Integrei a API Open-Meteo para buscar clima automaticamente após captura do GPS. WeatherService acessa a API diretamente sem Repository abaixo — decisão arquitetural consciente pois não há persistência de dados climáticos. Criei o model Clima com getter de descrição humanizada do weatherCode. A falha na API não bloqueia o fluxo do usuário.

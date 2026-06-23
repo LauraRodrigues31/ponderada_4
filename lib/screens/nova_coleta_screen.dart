@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import '../models/clima.dart';
 import '../models/coleta.dart';
 import '../services/camera_service.dart';
 import '../services/coleta_service.dart';
 import '../services/location_service.dart';
+import '../services/weather_service.dart';
 
 class NovaColetaScreen extends StatefulWidget {
   const NovaColetaScreen({super.key});
@@ -19,10 +21,13 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
   final _cameraService = CameraService();
   final _locationService = LocationService();
   final _coletaService = ColetaService();
+  final _weatherService = WeatherService();
   String? _tipoRocha;
   String? _fotoPath;
   double? _latitude;
   double? _longitude;
+  Clima? _clima;
+  bool _carregandoClima = false;
 
   @override
   void dispose() {
@@ -44,7 +49,10 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
       setState(() {
         _latitude = posicao.latitude;
         _longitude = posicao.longitude;
+        _clima = null;
+        _carregandoClima = true;
       });
+      await _buscarClima(posicao.latitude, posicao.longitude);
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -53,6 +61,14 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
         ),
       );
     }
+  }
+
+  Future<void> _buscarClima(double lat, double lon) async {
+    final dados = await _weatherService.buscarClima(lat, lon);
+    setState(() {
+      _carregandoClima = false;
+      _clima = dados != null ? Clima.fromMap(dados) : null;
+    });
   }
 
   Future<void> _salvar() async {
@@ -150,6 +166,22 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
                       'Localização não capturada',
                       style: TextStyle(color: Colors.grey),
                     ),
+              const SizedBox(height: 4),
+              if (_carregandoClima)
+                const SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              else if (_clima != null)
+                Text(
+                  '🌡️ ${_clima!.temperatura.toStringAsFixed(0)}°C • ${_clima!.descricao}',
+                )
+              else if (_latitude != null)
+                const Text(
+                  'Clima indisponível',
+                  style: TextStyle(color: Colors.grey),
+                ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _salvar,
