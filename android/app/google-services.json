@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "393915744815",
+    "project_id": "frontera-campo-4aa54",
+    "storage_bucket": "frontera-campo-4aa54.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393915744815:android:39af06129a2a436b51fcda",
+        "android_client_info": {
+          "package_name": "com.example.ponderada_4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzxSMxwaRaGJmwS8Vm4rxcNMUHrmv_hAI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

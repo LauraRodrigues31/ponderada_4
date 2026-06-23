@@ -9,48 +9,82 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Frontera Campo')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'Frontera Campo',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            const Text('Registro de coletas em campo'),
-            const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const NovaColetaScreen()),
-                );
-              },
-              child: const Text('Nova Coleta'),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HistoricoScreen()),
-                );
-              },
-              child: const Text('Ver Histórico'),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SobreScreen()),
-                );
-              },
-              child: const Text('Sobre o app'),
-            ),
-          ],
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'FRONTERA',
+                style: TextStyle(
+                  color: Color(0xFFC9A84C),
+                  fontSize: 32,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 4,
+                ),
+              ),
+              const Text(
+                'CAMPO',
+                style: TextStyle(
+                  color: Color(0xFFF5F5F0),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w300,
+                  letterSpacing: 6,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Divider(color: Color(0xFFC9A84C), thickness: 1),
+              const SizedBox(height: 8),
+              const Text(
+                'Registro de coletas geológicas',
+                style: TextStyle(color: Color(0xFF8A8A8A), fontSize: 14),
+              ),
+              const SizedBox(height: 40),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const NovaColetaScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.add_circle_outline),
+                  label: const Text('Nova Coleta'),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HistoricoScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.history),
+                  label: const Text('Histórico'),
+                ),
+              ),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SobreScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.info_outline),
+                  label: const Text('Sobre o app'),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

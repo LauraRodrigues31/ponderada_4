@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import '../models/coleta.dart';
 
 class FirebaseService {
@@ -13,16 +11,9 @@ class FirebaseService {
   }
 
   Future<String?> _sincronizar(Coleta coleta) async {
-    String? fotoUrl;
-    if (coleta.fotoPath != null) {
-      final ref = FirebaseStorage.instance.ref(
-        'fotos/${DateTime.now().millisecondsSinceEpoch}.jpg',
-      );
-      await ref.putFile(File(coleta.fotoPath!));
-      fotoUrl = await ref.getDownloadURL();
-    }
-
-    final dados = coleta.toMap()..['fotoUrl'] = fotoUrl;
+    // Firebase Storage requer plano Blaze — fotos ficam apenas no dispositivo.
+    // Apenas os dados textuais são sincronizados com o Firestore.
+    final dados = Map<String, dynamic>.from(coleta.toMap());
     final doc = await FirebaseFirestore.instance
         .collection('coletas')
         .add(dados);
