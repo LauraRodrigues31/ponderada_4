@@ -108,12 +108,12 @@ flutter run
   <tr>
     <td align="center"><b>Sobre</b></td>
     <td align="center"><b>Firebase Firestore</b></td>
-    <td></td>
+    <td align="center"><b>Notificação</b></td>
   </tr>
   <tr>
     <td><img src="docs/screenshots/sobre.jpeg" width="200"/></td>
     <td><img src="docs/screenshots/firebase.jpeg" width="200"/></td>
-    <td></td>
+    <td><img src="docs/screenshots/notificação_funcionando.jpeg" width="200"/></td>
   </tr>
 </table>
 

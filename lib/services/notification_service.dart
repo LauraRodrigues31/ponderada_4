@@ -9,6 +9,10 @@ class NotificationService {
       iOS: DarwinInitializationSettings(),
     );
     await _plugin.initialize(settings);
+    await _plugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
   }
 
   Future<void> notificarSyncConcluido(String nomeColeta) async {
