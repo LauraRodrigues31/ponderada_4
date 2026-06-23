@@ -13,3 +13,7 @@ Implementei a tela Nova Coleta como StatefulWidget pois ela precisa manter o est
 ### Passo 3 — Câmera (primeiro hardware)
 
 Integrei o image_picker para captura de fotos pela câmera nativa. Criei CameraService em services/ seguindo Clean Architecture: a Screen (Handler) apenas reage ao toque e chama o Service, que é o único lugar que conhece o image_picker. A tela exibe preview da foto capturada ou um placeholder visual quando nenhuma foto foi tirada ainda.
+
+### Passo 4 — GPS (segundo hardware)
+
+Integrei o geolocator para captura de coordenadas GPS. Criei LocationService em services/ seguindo o mesmo padrão do CameraService: a Screen apenas reage ao toque e delega ao Service. Implementei tratamento de erro para os casos de permissão negada e GPS desligado — primeiro ponto do app onde erros reais de hardware precisaram ser tratados explicitamente.

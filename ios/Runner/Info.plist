@@ -4,6 +4,8 @@
 <dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Necessário para fotografar amostras de campo</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Necessário para registrar o local da coleta de campo</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

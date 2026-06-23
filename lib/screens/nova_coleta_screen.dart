@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import '../services/camera_service.dart';
+import '../services/location_service.dart';
 
 class NovaColetaScreen extends StatefulWidget {
   const NovaColetaScreen({super.key});
@@ -14,8 +15,11 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
   final _nomeController = TextEditingController();
   final _observacoesController = TextEditingController();
   final _cameraService = CameraService();
+  final _locationService = LocationService();
   String? _tipoRocha;
   String? _fotoPath;
+  double? _latitude;
+  double? _longitude;
 
   @override
   void dispose() {
@@ -28,6 +32,23 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
     final path = await _cameraService.tirarFoto();
     if (path != null) {
       setState(() => _fotoPath = path);
+    }
+  }
+
+  Future<void> _capturarLocalizacao() async {
+    final posicao = await _locationService.capturarLocalizacao();
+    if (posicao != null) {
+      setState(() {
+        _latitude = posicao.latitude;
+        _longitude = posicao.longitude;
+      });
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Não foi possível obter localização. Verifique as permissões.'),
+        ),
+      );
     }
   }
 
@@ -96,10 +117,19 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
                     ),
               const SizedBox(height: 12),
               OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: _capturarLocalizacao,
                 icon: const Icon(Icons.location_on),
                 label: const Text('Capturar Localização'),
               ),
+              const SizedBox(height: 8),
+              _latitude != null
+                  ? Text(
+                      '📍 Lat: ${_latitude!.toStringAsFixed(4)}, Long: ${_longitude!.toStringAsFixed(4)}',
+                    )
+                  : const Text(
+                      'Localização não capturada',
+                      style: TextStyle(color: Colors.grey),
+                    ),
               const SizedBox(height: 24),
               ElevatedButton(
                 onPressed: _salvar,
