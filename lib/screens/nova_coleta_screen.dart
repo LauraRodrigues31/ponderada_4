@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import '../services/camera_service.dart';
 
 class NovaColetaScreen extends StatefulWidget {
   const NovaColetaScreen({super.key});
@@ -11,13 +13,22 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nomeController = TextEditingController();
   final _observacoesController = TextEditingController();
+  final _cameraService = CameraService();
   String? _tipoRocha;
+  String? _fotoPath;
 
   @override
   void dispose() {
     _nomeController.dispose();
     _observacoesController.dispose();
     super.dispose();
+  }
+
+  Future<void> _adicionarFoto() async {
+    final path = await _cameraService.tirarFoto();
+    if (path != null) {
+      setState(() => _fotoPath = path);
+    }
   }
 
   void _salvar() {
@@ -65,10 +76,24 @@ class _NovaColetaScreenState extends State<NovaColetaScreen> {
               ),
               const SizedBox(height: 24),
               OutlinedButton.icon(
-                onPressed: () {},
+                onPressed: _adicionarFoto,
                 icon: const Icon(Icons.camera_alt),
                 label: const Text('Adicionar Foto'),
               ),
+              const SizedBox(height: 12),
+              _fotoPath != null
+                  ? Image.file(
+                      File(_fotoPath!),
+                      height: 200,
+                      fit: BoxFit.cover,
+                    )
+                  : Container(
+                      height: 200,
+                      color: Colors.grey[200],
+                      child: const Center(
+                        child: Icon(Icons.camera_alt, size: 48, color: Colors.grey),
+                      ),
+                    ),
               const SizedBox(height: 12),
               OutlinedButton.icon(
                 onPressed: () {},
